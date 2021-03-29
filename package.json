@@ -1,0 +1,14 @@
+{
+	"name": "adall-admin-server",
+	"version": "1.0.0",
+	"main": "server.js",
+	"repository": "https://github.com/Nathan-Mu/Amall-Admin-Server.git",
+	"author": "Nathan <zhaody.mu@gmail.com>",
+	"scripts": {
+		"start": "nodemon server.js"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"express": "^4.17.1"
+	}
+}
