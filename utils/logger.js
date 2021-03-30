@@ -33,4 +33,14 @@ const writeExceptionEntry = (where, exception, other) => {
 	write(EXCEPTIONS, exceptions);
 };
 
-module.exports = { write, writeLoginEntry, writeExceptionEntry };
+const recordException = (error, where, other) => {
+	console.log(`### Exception: ${where}\n`, error);
+	logger.writeExceptionEntry(`${where}`, error, other);
+};
+
+module.exports = {
+	write,
+	writeLoginEntry,
+	writeExceptionEntry,
+	recordException,
+};
