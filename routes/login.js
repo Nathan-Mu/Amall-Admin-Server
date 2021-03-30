@@ -5,7 +5,7 @@ const md5 = require('blueimp-md5');
 const User = require('../models/User');
 const Role = require('../models/Role');
 const logger = require('../utils/logger');
-const { PRIVATE_KEY } = require('../config/security');
+const { SECRET } = require('../config/security');
 const router = express.Router();
 
 // login
@@ -17,7 +17,7 @@ router.post('/', (req, res, next) => {
 				console.log(`>>> Action: Login(${username})`);
 				logger.writeLoginEntry('successfully', username);
 
-				const token = jwt.sign({ id: user._id }, PRIVATE_KEY, {
+				const token = jwt.sign({ id: user._id }, SECRET, {
 					expiresIn: '7 days',
 				});
 
@@ -50,9 +50,10 @@ router.post('/', (req, res, next) => {
 			}
 		})
 		.catch(error => {
-			console.log('### Error: Login error', error);
-			logger.writeLoginEntry('error', username, error);
-			res.send({ status: 1, msg: 'Login error' });
+			console.log('### Exception: Login\n', error);
+			logger.writeLoginEntry('exception', username, error);
+			logger.writeExceptionEntry('Login', error);
+			res.send({ status: 1, msg: 'Exception occurs when login' });
 		});
 });
 

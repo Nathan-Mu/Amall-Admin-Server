@@ -4,11 +4,14 @@ const mongoose = require('mongoose');
 const routes = require('./routes/index');
 const { PORT: DB_PORT, HOST: DB_HOST, NAME: DB_NAME } = require('./config/db');
 const { PORT: APP_PORT } = require('./config/app');
+const tokenValidator = require('./middleware/tokenValidator');
 
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(tokenValidator);
 
 app.use('/', routes);
 
