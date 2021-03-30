@@ -1,9 +1,11 @@
 let fs = require('fs');
+let path = require('path');
 let dayjs = require('dayjs');
-const { GENERAL } = require('../log/logFileNames');
+const { GENERAL, EXCEPTIONS } = require('../config/logFileNames');
 
 const write = (logFileName, lines) => {
-	let ws = fs.createWriteStream(`./log/${logFileName}`, { flags: 'a' });
+	logPath = path.join(__dirname, '..', `/log/${logFileName}`);
+	let ws = fs.createWriteStream(logPath, { flags: 'a' });
 	lines.forEach(line => {
 		ws.write(line + '\n');
 	});
@@ -21,4 +23,14 @@ const writeLoginEntry = (result, username, other) => {
 	write(GENERAL, lines);
 };
 
-module.exports = { write, writeLoginEntry };
+const writeExceptionEntry = (where, exception, other) => {
+	let exceptions = [
+		`# Where - ${where}`,
+		`Date: ${dayjs().format('DD/MMM/YYYY HH:mm:ss')}`,
+		`Error: ${exception}`,
+	];
+	if (other) exceptions.push(other);
+	write(EXCEPTIONS, exceptions);
+};
+
+module.exports = { write, writeLoginEntry, writeExceptionEntry };
