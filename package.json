@@ -7,6 +7,12 @@
 	"scripts": {
 		"start": "nodemon server.js"
 	},
+	"nodemonConfig": {
+		"ignore": [
+			"log/*"
+		],
+		"delay": "1000"
+	},
 	"license": "MIT",
 	"dependencies": {
 		"blueimp-md5": "^2.18.0",
