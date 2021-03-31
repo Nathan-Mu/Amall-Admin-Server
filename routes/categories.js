@@ -78,10 +78,10 @@ router.post('/update', (req, res) => {
 });
 
 /*
- * GET /categories/:id
+ * GET /categories/info/:id
  * params: {id}
  */
-router.get('/:id', (req, res) => {
+router.get('/view/:id', (req, res) => {
 	const { id } = req.params;
 	Category.findOne({ _id: id })
 		.then(category => {
