@@ -47,7 +47,7 @@ router.post('/new', (req, res) => {
 });
 
 /*
- * GET /products/all?pageNum=x&pageSize=x
+ * GET /products/all?
  * query: {pageNum, pageSize}
  */
 router.get('/all', (req, res) => {
@@ -74,6 +74,10 @@ router.get('/all', (req, res) => {
 		});
 });
 
+/*
+ * GET /products/search?
+ * query: {pageNum, pageSize, productName} or {pageNum, pageSize, productDesc}
+ */
 router.get('/search', (req, res) => {
 	const {
 		pageNum = DEFAULT_PAGE_NO,
@@ -99,18 +103,69 @@ router.get('/search', (req, res) => {
 			return Product.find(condition, null, options);
 		})
 		.then(products => {
-			res.send(
-				response.good({
-					list: products.reverse(),
-					pageNum,
-					pageSize,
-					total,
-				})
-			);
+			const list = products.reverse();
+			const data = { list, pageNum, pageSize, total };
+			res.send(response.good(data));
 		})
 		.catch(error => {
 			let where = 'Get category by page no and size';
 			logger.recordException(error, where);
+			res.send(response.exception(where));
+		});
+});
+
+/*
+ * GET /products/view/:id
+ * params: {id}
+ */
+router.get('/view/:id', (req, res) => {
+	const { id } = req.params;
+	Product.findById(id)
+		.then(product => {
+			res.send(response.good({ product }));
+		})
+		.catch(error => {
+			let where = 'Get product by id';
+			logger.recordException(error, where);
+			res.send(response.exception(where));
+		});
+});
+
+/*
+ * Get /products/update
+ * body: {id, categoryId, name, desc, price, detail, imgs}
+ */
+router.post('/update/:id', (req, res) => {
+	const product = req.body;
+	const { id } = product;
+	Product.findByIdAndUpdate(id, product)
+		.then(() => {
+			res.send(response.good());
+		})
+		.catch(error => {
+			let where = 'Update product by id';
+			logger.recordException(error, where, `product: ${product}`);
+			res.send(response.exception(where));
+		});
+});
+
+/*
+ * POST /product/updateStatus
+ * body: {productId, status}
+ */
+router.post('/product/updateStatus', (req, res) => {
+	const { productId, status } = req.body;
+	Product.findByIdAndUpdate(productId, { status })
+		.then(() => {
+			res.send(response.good());
+		})
+		.catch(error => {
+			let where = 'Update product status by id';
+			logger.recordException(
+				error,
+				where,
+				`product id: ${productId}, status: ${status}`
+			);
 			res.send(response.exception(where));
 		});
 });
