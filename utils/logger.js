@@ -13,6 +13,17 @@ const write = (logFileName, lines) => {
 	ws.close();
 };
 
+const writeServerStartEntry = details => {
+	let lines = [
+		'##########################################',
+		'#            Server Started              #',
+		'##########################################',
+		details,
+		`at ${dayjs().format('DD/MMM/YYYY HH:mm:ss')}`,
+	];
+	write(GENERAL, lines);
+};
+
 const writeLoginEntry = (result, username, other) => {
 	let lines = [
 		`# Login - ${result}`,
@@ -38,9 +49,14 @@ const recordException = (error, where, other) => {
 	logger.writeExceptionEntry(`${where}`, error, other);
 };
 
+const recordServerStart = details => {
+	writeServerStartEntry(details);
+};
+
 module.exports = {
 	write,
 	writeLoginEntry,
 	writeExceptionEntry,
 	recordException,
+	recordServerStart,
 };
