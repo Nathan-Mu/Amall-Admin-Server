@@ -22,9 +22,3 @@ Back-end: https://github.com/Nathan-Mu/Amall-Admin-Server
 ## Online Demo
 
 Availble on http://amall-admin.xyz (username: `admin`, password: `admin`)
-
-![image-20210305155015150](README.assets/image-20210305155015150.png)
-
-![image-20210305155127963](README.assets/image-20210305155127963.png)
-
-![image-20210305155151932](README.assets/image-20210305155151932.png)
